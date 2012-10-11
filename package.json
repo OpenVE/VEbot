@@ -1,0 +1,17 @@
+{ "name" : "VEbot"
+, "description" : "OpenVE's IRC Bot"
+, "version" : "0.0.1"
+, "homepage" : "http://vebot.heroku.com/"
+, "repository" : "git://github.com/OpenVE/VEbot.git"
+, "author" : "Daniel Rodríguez <http://sadasant.com/>"
+, "scripts" :
+  { "start" : "node bot.js"
+  }
+, "dependencies" :
+  { "irc" : "0.3.4"
+  }
+, "engines" :
+  { "node" : "0.8.5"
+  , "npm" : "1.1.x"
+  }
+}
