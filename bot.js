@@ -38,9 +38,6 @@ var spanish_help = 'OpenVE es una comunidad libre dedicada a la investigación y
     , 'HELP!' : english_help
     }
 
-// All the messages
-var messages = ''
-
 // API answers
 var APIs = {
   twitter : {} // By id
@@ -58,7 +55,6 @@ client.addListener('join', function(channel, nick) {
 
 // Answering to user's messages
 client.addListener('message', function(from, to, message) {
-  messages += message
   if (to === '#openve' && ~message.indexOf('VEbot:')) {
     message = message.replace('VEbot:', '').toUpperCase().trim()
     if (known_messages[message]) {
@@ -96,5 +92,5 @@ function gotTwitterResults(res) {
 // Server
 http.createServer(function(req, res) {
   res.writeHead(200, {'Content-Type' : 'text/plain'})
-  res.end(messages)
+  res.end('VEbot for OpenVE')
 }).listen(process.env.PORT || 3000)
