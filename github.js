@@ -7,7 +7,7 @@ exports.init = function(_bot) {
 
   setInterval(function() {
     https.get(bot.config.github.private_atom, gotResults)
-  }, 1000 * 10 * 5) // 5 minute
+  }, 1000 * 10 * 3) // 3 Minutes
 }
 
 function gotResults(res) {

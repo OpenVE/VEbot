@@ -6,7 +6,7 @@ exports.init = function(_bot) {
 
   setInterval(function() {
     http.get('http://search.twitter.com/search.json?q=OpenVE&rpp=5&result_type=recent', gotResults)
-  }, 1000 * 60 * 1) // 1 minute
+  }, 1000 * 60 * 1) // 1 Minute
 }
 
 function gotResults(res) {
