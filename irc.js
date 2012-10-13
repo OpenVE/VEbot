@@ -12,6 +12,10 @@ exports.init = function(bot) {
   // Answering to user's messages
   client.addListener('message', bot.controller.message)
 
+  setInterval(function() {
+    client.whois(bot.config.irc.nick)
+  }, 1000 * 60 * 1) // One Minute
+
   return client
 }
 

@@ -20,6 +20,7 @@ var spanish_help = 'OpenVE es una comunidad libre dedicada a la investigación y
     , 'AYUDA!': spanish_help
     , 'HELP'  : english_help
     , 'HELP!' : english_help
+    , '?'     : '???'
     }
   , twitter_search = {}
 
@@ -44,6 +45,8 @@ controller.message = function(from, to, message) {
     message = message.replace(/.?VEBOT.?/g, '').trim()
     if (known_messages[message]) {
       bot.client.say(to, from + ': ' + known_messages[message])
+    } else {
+      bot.client.say(to, from + ': ' + known_messages['?'])
     }
   }
 }
