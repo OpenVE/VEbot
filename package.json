@@ -9,6 +9,7 @@
   }
 , "dependencies" :
   { "irc" : "0.3.4"
+  , "xml2json" : "0.3.2"
   }
 , "engines" :
   { "node" : "0.8.5"

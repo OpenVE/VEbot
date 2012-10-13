@@ -4,3 +4,7 @@ exports.irc = {
 , server   : 'irc.freenode.net'
 , channels : ['#OpenVE']
 }
+
+exports.github = {
+  private_atom : 'https://github.com/organizations/OpenVE/sadasant.private.atom?token=' // Plus the token id
+}

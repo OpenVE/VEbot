@@ -9,6 +9,8 @@ bot.client = require('./irc').init(bot)
 
 bot.twitter_interval = require('./twitter').init(bot)
 
+bot.github_interval = require('./github').init(bot)
+
 // Server
 http.createServer(function(req, res) {
   res.writeHead(200, {'Content-Type' : 'text/plain'})

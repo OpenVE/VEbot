@@ -23,8 +23,10 @@ var spanish_help = 'OpenVE es una comunidad libre dedicada a la investigación y
     , '?'     : '???'
     }
   , twitter_search = {}
+  , github_feed = {}
   , irc_nick_uppercased
   , irc_nick_regex
+
 
 exports.init = function(_bot) {
   bot = _bot
@@ -33,15 +35,17 @@ exports.init = function(_bot) {
   return controller
 }
 
+
 // Say hello to new users
 controller.join = function(channel, nick) {
-  nick = nick.toUpperCase()
-  if (nick === irc_nick_uppercased) {
+  var nick_uppercassed = nick.toUpperCase()
+  if (nick_uppercassed === irc_nick_uppercased) {
     bot.client.say(channel, '¡Saludos!')
   } else {
     bot.client.say(channel, nick + ': ' + '¡Bienvenido a OpenVE! :)')
   }
 }
+
 
 // Answering to user's messages
 controller.message = function(from, to, message) {
@@ -60,6 +64,8 @@ controller.message = function(from, to, message) {
   }
 }
 
+
+// Announcing Twitter Updates
 controller.twitterSearch = function(obj) {
   var results = obj.results
     , host = 'https://twitter.com/'
@@ -82,4 +88,27 @@ controller.twitterSearch = function(obj) {
     }
   }
   twitter_search.started = true
+}
+
+
+// Announcing Github Updates
+controller.githubFeed = function(obj) {
+  var entries = obj.feed.entry
+    , k
+    , v
+  if (!github_feed.updated) {
+    github_feed.updated = new Date(entries[0].updated)
+  }
+  for (k in entries) {
+    v = entries[k]
+    if (!github_feed[v.id]) {
+      github_feed[v.id] = v
+      if (github_feed.started
+      && (github_feed.updated - new Date(v.updated)) < 0 // New update
+        ) {
+        bot.client.say('#OpenVE', 'Github: "' + v.title.$t + '"\n' + v.link.href)
+      }
+    }
+  }
+  github_feed.started = true
 }

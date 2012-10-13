@@ -1,12 +1,13 @@
-var http = require('http')
+var https = require('https')
+  , xml   = require('xml2json')
   , bot
 
 exports.init = function(_bot) {
   bot = _bot
 
   setInterval(function() {
-    http.get('http://search.twitter.com/search.json?q=OpenVE&rpp=5&result_type=recent', gotResults)
-  }, 1000 * 60 * 1) // 1 minute
+    https.get(bot.config.github.private_atom, gotResults)
+  }, 1000 * 10 * 5) // 5 minute
 }
 
 function gotResults(res) {
@@ -15,6 +16,6 @@ function gotResults(res) {
     data += chunk
   })
   res.on('end', function() {
-    bot.controller.twitterSearch(JSON.parse(data))
+    bot.controller.githubFeed(JSON.parse(xml.toJson(data)))
   })
 }
