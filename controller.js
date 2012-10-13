@@ -23,15 +23,20 @@ var spanish_help = 'OpenVE es una comunidad libre dedicada a la investigación y
     , '?'     : '???'
     }
   , twitter_search = {}
+  , irc_nick_uppercased
+  , irc_nick_regex
 
 exports.init = function(_bot) {
   bot = _bot
+  irc_nick_uppercased = bot.config.irc.nick.toUpperCase()
+  irc_nick_regex = new RegExp('.?' + irc_nick_uppercased + '.?', 'g')
   return controller
 }
 
-// Say hello to the new users
+// Say hello to new users
 controller.join = function(channel, nick) {
-  if (nick === 'VEbot') {
+  nick = nick.toUpperCase()
+  if (nick === irc_nick_uppercased) {
     bot.client.say(channel, '¡Saludos!')
   } else {
     bot.client.say(channel, nick + ': ' + '¡Bienvenido a OpenVE! :)')
@@ -41,8 +46,12 @@ controller.join = function(channel, nick) {
 // Answering to user's messages
 controller.message = function(from, to, message) {
   message = message.toUpperCase()
-  if (to === '#openve' && ~message.indexOf('VEBOT')) {
-    message = message.replace(/.?VEBOT.?/g, '').trim()
+  if (to === '#openve' && ~message.indexOf(irc_nick_uppercased)) {
+    message = message.replace(irc_nick_regex, '').trim()
+    if (message === '???') {
+      // Avoiding recursion when there are two bots in the room.
+      return
+    } else
     if (known_messages[message]) {
       bot.client.say(to, from + ': ' + known_messages[message])
     } else {
