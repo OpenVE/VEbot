@@ -16,3 +16,8 @@ http.createServer(function(req, res) {
   res.writeHead(200, {'Content-Type' : 'text/plain'})
   res.end('VEbot for OpenVE')
 }).listen(process.env.PORT || 3000)
+
+// Heroku halts the process if it has no requests
+setInterval(function() {
+  http.get('http://vebot.github.com/')
+}, 1000 * 60 * 10)
