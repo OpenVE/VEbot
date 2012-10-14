@@ -6,5 +6,5 @@ exports.irc = {
 }
 
 exports.github = {
-  private_atom : 'https://github.com/organizations/OpenVE/sadasant.private.atom?token=' // Plus the token id
+  private_atom : 'http://atom_http_url.com/'
 }
