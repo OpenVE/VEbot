@@ -1,4 +1,12 @@
 <?
+// Bot
+$bot = 'https://vebot.herokuapp.com/';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_exec($ch);
+curl_close($ch);
+
+// Github
 // This needs to be on a separated server
 // The reason for this file is that Heroku has an issue
 // with outgoing https requests.
