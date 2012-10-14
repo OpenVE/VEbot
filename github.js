@@ -1,4 +1,4 @@
-var https = require('https')
+var http = require('https')
   , xml   = require('xml2json')
   , bot
 
@@ -6,8 +6,8 @@ exports.init = function(_bot) {
   bot = _bot
 
   setInterval(function() {
-    https.get(bot.config.github.private_atom, gotResults)
-  }, 1000 * 10 * 3) // 3 Minutes
+    http.get(bot.config.github.private_atom, gotResults)
+  }, 1000 * 60 * 3) // 3 Minutes
 }
 
 function gotResults(res) {
