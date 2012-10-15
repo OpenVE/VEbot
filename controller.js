@@ -50,7 +50,7 @@ controller.join = function(channel, nick) {
 // Answering to user's messages
 controller.message = function(from, to, message) {
   message = message.toUpperCase()
-  if (to === '#openve' && ~message.indexOf(irc_nick_uppercased)) {
+  if (to === bot.config.irc.channels[0] && ~message.indexOf(irc_nick_uppercased)) {
     message = message.replace(irc_nick_regex, '').trim()
     if (message === '???') {
       // Avoiding recursion when there are two bots in the room.
