@@ -6,5 +6,6 @@ exports.irc = {
 }
 
 exports.github = {
-  private_atom : 'http://atom_http_url.com/'
+  host : '' // Your host, without https (myhost.com)
+, path : '' // Your path (/mypage.php?lol=1)
 }

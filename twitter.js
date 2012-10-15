@@ -1,12 +1,21 @@
 var http = require('http')
   , bot
+  , options = {
+      host : 'search.twitter.com'
+    , path : '/search.json?q=OpenVE&rpp=5&result_type=recent'
+    , method : 'GET'
+    }
+  , time = 1000 * 30 // 30 Seconds
 
 exports.init = function(_bot) {
   bot = _bot
+  makeRequests()
+}
 
-  setInterval(function() {
-    http.get('http://search.twitter.com/search.json?q=OpenVE&rpp=5&result_type=recent', gotResults)
-  }, 1000 * 60 * 0.5) // 30 Seconds
+function makeRequests() {
+  var req = http.request(options, gotResults)
+  req.end()
+  req.on('error', gotError)
 }
 
 function gotResults(res) {
@@ -15,6 +24,17 @@ function gotResults(res) {
     data += chunk
   })
   res.on('end', function() {
-    bot.controller.twitterSearch(JSON.parse(data))
+    try {
+      data = JSON.parse(data)
+    } catch(e) {
+      return gotError(e)
+    }
+    bot.controller.twitterSearch(data)
+    setTimeout(makeRequests, time)
   })
+}
+
+function gotError(error) {
+  console.log(error)
+  setTimeout(makeRequests, time)
 }
