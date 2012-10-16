@@ -22,8 +22,14 @@ var spanish_help = 'OpenVE es una comunidad libre dedicada a la investigación y
     , 'HELP!' : english_help
     , '?'     : '???'
     }
-  , twitter_search = {}
-  , github_feed = {}
+  , twitter = {
+      updated_at : ''
+    , results    : {}
+    }
+  , github = {
+      updated_at : ''
+    , results    : {}
+    }
   , irc_nick_uppercased
   , irc_nick_regex
 
@@ -72,43 +78,53 @@ controller.twitterSearch = function(obj) {
     , url
     , k
     , v
-  if (!twitter_search.updated_at) {
-    twitter_search.updated_at = new Date(results[0].created_at)
+  if (!twitter.updated_at) {
+    twitter.updated_at = new Date(results[0].created_at)
   }
   for (k in results) {
     v = results[k]
-    if (!twitter_search[v.id_str]) {
-      twitter_search[v.id_str] = v
-      if (twitter_search.started
-      && (twitter_search.updated_at - new Date(v.created_at)) < 0 // New tweet
+    if (!twitter.results[v.id_str]) {
+      if (twitter.started
+      && (twitter.updated_at - new Date(v.created_at)) < 0 // New tweet
         ) {
         url = host + v.from_user + '/status/' + v.id_str
-        bot.client.say('#OpenVE', 'Twitter: "' + v.text + '"\n' + url)
+        bot.client.say('#OpenVE', '@' + v.from_user + ': "' + v.text + '"\n' + url)
       }
     }
   }
-  twitter_search.started = true
+  // Cleaning and restoring the cache:
+  twitter.results = {}
+  for (k in results) {
+    v = results[k]
+    twitter.results[v.id_str] = v
+  }
+  twitter.started = true
 }
 
 
 // Announcing Github Updates
 controller.githubFeed = function(obj) {
-  var entries = obj.feed.entry
+  var results = obj.feed.entry
     , k
     , v
-  if (!github_feed.updated) {
-    github_feed.updated = new Date(entries[0].updated)
+  if (!github.updated) {
+    github.updated = new Date(results[0].updated)
   }
-  for (k in entries) {
-    v = entries[k]
-    if (!github_feed[v.id]) {
-      github_feed[v.id] = v
-      if (github_feed.started
-      && (github_feed.updated - new Date(v.updated)) < 0 // New update
+  for (k in results) {
+    v = results[k]
+    if (!github.results[v.id]) {
+      if (github.started
+      && (github.updated - new Date(v.updated)) < 0 // New update
         ) {
         bot.client.say('#OpenVE', 'Github: "' + v.title.$t + '"\n' + v.link.href)
       }
     }
   }
-  github_feed.started = true
+  // Cleaning and restoring the cache:
+  github.results = {}
+  for (k in results) {
+    v = results[k]
+    github.results[v.id] = v
+  }
+  github.started = true
 }
