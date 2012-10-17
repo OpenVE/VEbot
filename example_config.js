@@ -2,7 +2,7 @@ exports.irc = {
   nick     : 'VEbot'
 , password : 'password'
 , server   : 'irc.freenode.net'
-, channels : ['#OpenVE']
+, channels : ['#OPENVE'] // It must be in uppercase
 }
 
 exports.github = {
